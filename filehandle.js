@@ -18,6 +18,8 @@ function clearBoard(){
  $id('anchorsData').innerHTML = ""
  $id('terrainsData').innerHTML = ""
  $id('vehicleEventsData').innerHTML = ""
+ $id('shipEventsData').innerHTML = ""
+ $id('bigDataBox').style.display = "initial"
 }
 
 function showClass(className){
@@ -156,6 +158,8 @@ function loadLevelData(array,upperKeyName,upperUpperKeyName){
       $id('terrainsData').innerHTML = $id('terrainsData').innerHTML + "<div>#"+key+"</a> w/ id "+array[key]["terrainType"]+" ("+array[key]["layoutName"]+") at (<input id='terrainsInputX"+key+"' type='text' name='"+key+"' value='"+array[key]["pos"]["x"]+"'>/<input id='terrainsInputY"+key+"' type='text' name='"+key+"' value='"+array[key]["pos"]["y"]+"'>)</div>"		 
 	 }else if(upperKeyName=="vehicleEvents"){
       $id('vehicleEventsData').innerHTML = $id('vehicleEventsData').innerHTML + "<div class='"+((key%2==0) ? "bright" : "dark")+"'><a class='vehicleEvents"+key+"' onmouseover='showClass(\"vehicleEvents"+ key +"\")' onmouseout='hideClass(\"vehicleEvents"+ key +"\")'>#"+key+"</a> of type "+array[key]["vehicleType"]+" at (<input id='vehicleEventsInputX"+key+"' type='text' name='"+key+"' value='"+array[key]["pos"]["x"]+"'>/<input id='vehicleEventsInputY"+key+"' type='text' name='"+key+"' value='"+array[key]["pos"]["y"]+"'>) <a class='hoverSee EID"+array[key]["group"]+"' onmouseover='showClass(\"EID"+array[key]["group"]+"\")' onmouseout='hideClass(\"EID"+array[key]["group"]+"\")'>EID "+array[key]["group"]+"</a>, <a class='hoverSee TG"+array[key]["targetGroup"]+"' onmouseover='showClass(\"TG"+array[key]["targetGroup"]+"\")' onmouseout='hideClass(\"TG"+array[key]["targetGroup"]+"\")'> TG "+array[key]["targetGroup"]+"</a>; speed <input id='vehicleEventsInputSpeed"+key+"' type='text' name='"+key+"' value='"+array[key]["speedMultiplier"]+"'></div>"		 
+	 }else if(upperKeyName=="shipEvents"){
+      $id('shipEventsData').innerHTML = $id('shipEventsData').innerHTML + "<div><a class='shipEvents"+key+"' onmouseover='showClass(\"shipEvents"+ key +"\")' onmouseout='hideClass(\"shipEvents"+ key +"\")'>#"+key+"</a> type "+array[key]["shipType"]+" at (<input id='shipEventsInputX"+key+"' type='text' name='"+key+"' value='"+array[key]["pos"]["x"]+"'>/<input id='shipEventsInputY"+key+"' type='text' name='"+key+"' value='"+array[key]["pos"]["y"]+"'>) <a class='hoverSee EID"+array[key]["group"]+"' onmouseover='showClass(\"EID"+array[key]["group"]+"\")' onmouseout='hideClass(\"EID"+array[key]["group"]+"\")'>EID "+array[key]["group"]+"</a></div>"		  
 	 }
 	 
     }
@@ -179,14 +183,14 @@ function drawDataToDiv(array,space,upperKeyName,upperUpperKeyName){
    var typ = typeof array[key]	  
    if(typ=="object"){
     if((typeof (array[key].length)) != "undefined"){
-     $id('data').innerHTML = $id('data').innerHTML + '<div> '+ space + key +' { '+ (array[key].length) +' } </div>'
+     $id('saveData').innerHTML = $id('saveData').innerHTML + '<div> '+ space + key +' { '+ (array[key].length) +' } </div>'
 	 drawDataToDiv(array[key],(space+"&nbsp;|&nbsp;"),key,upperKeyName)
     }else{
-	 $id('data').innerHTML = $id('data').innerHTML + '<div> '+ space + key +' [ '+ Object.size(array[key]) +' ] </div>'
+	 $id('saveData').innerHTML = $id('saveData').innerHTML + '<div> '+ space + key +' [ '+ Object.size(array[key]) +' ] </div>'
      drawDataToDiv(array[key],(space+"&nbsp;|&nbsp;"),key,upperKeyName)
     }
    }else{
-    $id('data').innerHTML = $id('data').innerHTML + '<div> '+ space + key +' is a '+ (typ) +' ['+ array[key] +']</div>'
+    $id('saveData').innerHTML = $id('saveData').innerHTML + '<div> '+ space + key +' is a '+ (typ) +' ['+ array[key] +']</div>'
    }
   }
  }
