@@ -1,0 +1,133 @@
+/*
+Styles for HTML5 File Drag & Drop demonstration
+Featured on SitePoint.com
+Developed by Craig Buckler (@craigbuckler) of OptimalWorks.net
+*/
+body
+{
+	font-family: "Segoe UI", Tahoma, Helvetica, freesans, sans-serif;
+	font-size: 90%;
+	margin: 10px;
+	color: #333;
+	background-color: #fff;
+	overflow-y: scroll;
+}
+
+
+
+h1, h2
+{
+	font-size: 1.5em;
+	font-weight: normal;
+}
+
+h2
+{
+	font-size: 1.3em;
+}
+
+legend
+{
+	font-weight: bold;
+	color: #333;
+}
+
+#upload fieldset {
+ width: 298px;
+ border-left-width: 0px;
+ border-right-width: 0px;
+ margin-left: -1px;
+ margin-top: -5px;
+}
+
+
+#filedrag
+{
+	display: none;
+	font-weight: bold;
+	text-align: center;
+	padding: 1em 0;
+	margin: 1em 0;
+	color: #555;
+	border: 2px dashed #555;
+	border-radius: 7px;
+	cursor: default;
+	margin-right: 4px;
+}
+
+#filedrag.hover
+{
+	color: #f00;
+	border-color: #393;
+	border-style: solid;
+	box-shadow: inset 0px 0px 3px 4px #8c8;
+}
+
+img
+{
+	max-width: 100%;
+}
+
+pre
+{
+	width: 95%;
+	height: 8em;
+	font-family: monospace;
+	font-size: 0.9em;
+	padding: 1px 2px;
+	margin: 0 0 1em auto;
+	border: 1px inset #666;
+	background-color: #eee;
+	overflow: auto;
+}
+
+#phases{
+ top:10px;
+ right:10px;
+ position:absolute;
+}
+
+#phases fieldset{
+ margin-top: 10px;
+}
+
+#catchFile{
+ width: 100%;
+ height: 100%;
+ left: 0px;
+ top: 0px;
+ position: fixed;
+ 
+ z-index:-1;
+ background-image: url("bg.jpg");
+}
+
+#catchFile.hover{box-shadow: inset 0px 0px 80px 40px #c88;}
+
+#resources{width:300px;}
+
+#LevelName{
+ position:fixed;
+ background-color: #e9e9e9;
+ padding: 0 11px;
+ margin: 10px 0px;
+ border: 1px solid #999;
+ border-top:0px;
+ width: 305px;
+ left: 45%;
+ width:300px;
+ top:-11px;
+}
+#LevelName input {background-color: #e9e9e9;font-style:italic;width: 295px;}
+#LevelName input:foucs {background-color: #e1e1e1; width: 200px;}
+
+#resourcesData input {
+ left: 190px;
+ position: absolute;
+ width: 100px;
+}
+
+input {outline:none; border: none;}
+
+
+
