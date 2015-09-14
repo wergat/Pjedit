@@ -71,7 +71,7 @@ function addNewPhaseBox(){
  var i = 0
  while(phases[i]==true){i++;}
  phases[i] = true
- $id('phases').innerHTML = $id('phases').innerHTML + "<fieldset id='fieldsetPhase"+i+"'><legend>Phase "+i+"</legend><div class='phaseBox' id='phases"+i+"' ondrop='drop(event)' ondragover='allowDrop(event)'></div></fieldset>";
+ $id('phases').innerHTML = $id('phases').innerHTML + "<fieldset id='fieldsetPhase"+i+"'><legend><a>Phase "+i+"</a></legend><div class='phaseBox' id='phases"+i+"' ondrop='drop(event)' ondragover='allowDrop(event)'></div></fieldset>";
  
  //Remove old newPhase/paperbin
  var element = $id("newPhase"); element.parentNode.removeChild(element);
@@ -92,7 +92,7 @@ function addToPhase(pID,text){
   for (i=0;i<=pID; i++) { 
    if(phases[i]!=true){
     phases[i]=true;
-	$id('phases').innerHTML = $id('phases').innerHTML + "<fieldset><legend>Phase "+i+"</legend><div class='phaseBox' id='phases"+i+"' ondrop='drop(event)' ondragover='allowDrop(event)'></div></fieldset>";
+	$id('phases').innerHTML = $id('phases').innerHTML + "<fieldset><legend><a class='hoverSee EID"+i+"' onmouseover='showClass(\"EID"+i+"\")' onmouseout='hideClass(\"EID"+i+"\")'>Phase "+i+"</a></legend><div class='phaseBox' id='phases"+i+"' ondrop='drop(event)' ondragover='allowDrop(event)'></div></fieldset>";
    }
   }
  }
@@ -160,6 +160,8 @@ function loadLevelData(array,upperKeyName,upperUpperKeyName){
       $id('vehicleEventsData').innerHTML = $id('vehicleEventsData').innerHTML + "<div class='"+((key%2==0) ? "bright" : "dark")+"'><a class='vehicleEvents"+key+"' onmouseover='showClass(\"vehicleEvents"+ key +"\")' onmouseout='hideClass(\"vehicleEvents"+ key +"\")'>#"+key+"</a> of type "+array[key]["vehicleType"]+" at (<input id='vehicleEventsInputX"+key+"' type='text' name='"+key+"' value='"+array[key]["pos"]["x"]+"'>/<input id='vehicleEventsInputY"+key+"' type='text' name='"+key+"' value='"+array[key]["pos"]["y"]+"'>) <a class='hoverSee EID"+array[key]["group"]+"' onmouseover='showClass(\"EID"+array[key]["group"]+"\")' onmouseout='hideClass(\"EID"+array[key]["group"]+"\")'>EID "+array[key]["group"]+"</a>, <a class='hoverSee TG"+array[key]["targetGroup"]+"' onmouseover='showClass(\"TG"+array[key]["targetGroup"]+"\")' onmouseout='hideClass(\"TG"+array[key]["targetGroup"]+"\")'> TG "+array[key]["targetGroup"]+"</a>; speed <input id='vehicleEventsInputSpeed"+key+"' type='text' name='"+key+"' value='"+array[key]["speedMultiplier"]+"'></div>"		 
 	 }else if(upperKeyName=="shipEvents"){
       $id('shipEventsData').innerHTML = $id('shipEventsData').innerHTML + "<div><a class='shipEvents"+key+"' onmouseover='showClass(\"shipEvents"+ key +"\")' onmouseout='hideClass(\"shipEvents"+ key +"\")'>#"+key+"</a> type "+array[key]["shipType"]+" at (<input id='shipEventsInputX"+key+"' type='text' name='"+key+"' value='"+array[key]["pos"]["x"]+"'>/<input id='shipEventsInputY"+key+"' type='text' name='"+key+"' value='"+array[key]["pos"]["y"]+"'>) <a class='hoverSee EID"+array[key]["group"]+"' onmouseover='showClass(\"EID"+array[key]["group"]+"\")' onmouseout='hideClass(\"EID"+array[key]["group"]+"\")'>EID "+array[key]["group"]+"</a></div>"		  
+	 }else if(upperKeyName=="pistonEvents"){
+      $id('pistonEventsData').innerHTML = $id('pistonEventsData').innerHTML + "<div><a class='pistonEvents"+key+"' onmouseover='showClass(\"pistonEvents"+ key +"\")' onmouseout='hideClass(\"pistonEvents"+ key +"\")'>#"+key+"</a> triggers at <a class='hoverSee EID"+array[key]["group"]+"' onmouseover='showClass(\"EID"+array[key]["group"]+"\")' onmouseout='hideClass(\"EID"+array[key]["group"]+"\")'>phase "+array[key]["group"]+"</a></div>"		  
 	 }
 	 
     }
