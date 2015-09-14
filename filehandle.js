@@ -15,6 +15,23 @@ function clearBoard(){
  phases = []
  $id('phases').innerHTML = ""
  $id('resourcesData').innerHTML = ""
+ $id('anchorsData').innerHTML = ""
+ $id('terrainsData').innerHTML = ""
+ $id('vehicleEventsData').innerHTML = ""
+}
+
+function showClass(className){
+ var x = document.getElementsByClassName(className);
+ for (i=0;i<x.length; i++) { 
+  x[i].style.background = "#9d9";
+ }  
+}
+
+function hideClass(className){
+ var x = document.getElementsByClassName(className);
+ for (i=0;i<x.length; i++) { 
+  x[i].style.background = "rgba(0,0,0,0)";
+ }  
 }
 
 function addNewNPAPB(){
@@ -128,21 +145,26 @@ function loadLevelData(array,upperKeyName,upperUpperKeyName){
   if(array.hasOwnProperty(key)) { //to be safe
    if(key=="normalized"||key=="magnitude"||key=="sqrMagnitude"){continue;}
    var typ = typeof array[key]
-   
    if(typ=="object"){
     if((typeof (array[key].length)) != "undefined"){
      loadLevelData(array[key],key,upperKeyName)
     }else{
      loadLevelData(array[key],key,upperKeyName)
+	 if(upperKeyName=="anchors"){
+	  $id('anchorsData').innerHTML = $id('anchorsData').innerHTML + "<div>#"+key+" at (<input id='anchorsInputX"+key+"' type='text' name='"+key+"' value='"+array[key]["pos"]["x"]+"'>/<input id='anchorsInputY"+key+"' type='text' name='"+key+"' value='"+array[key]["pos"]["y"]+"'>)</div>"
+	 }else if(upperKeyName=="terrains"){
+      $id('terrainsData').innerHTML = $id('terrainsData').innerHTML + "<div>#"+key+"</a> w/ id "+array[key]["terrainType"]+" ("+array[key]["layoutName"]+") at (<input id='terrainsInputX"+key+"' type='text' name='"+key+"' value='"+array[key]["pos"]["x"]+"'>/<input id='terrainsInputY"+key+"' type='text' name='"+key+"' value='"+array[key]["pos"]["y"]+"'>)</div>"		 
+	 }else if(upperKeyName=="vehicleEvents"){
+      $id('vehicleEventsData').innerHTML = $id('vehicleEventsData').innerHTML + "<div class='"+((key%2==0) ? "bright" : "dark")+"'><a class='vehicleEvents"+key+"' onmouseover='showClass(\"vehicleEvents"+ key +"\")' onmouseout='hideClass(\"vehicleEvents"+ key +"\")'>#"+key+"</a> of type "+array[key]["vehicleType"]+" at (<input id='vehicleEventsInputX"+key+"' type='text' name='"+key+"' value='"+array[key]["pos"]["x"]+"'>/<input id='vehicleEventsInputY"+key+"' type='text' name='"+key+"' value='"+array[key]["pos"]["y"]+"'>) <a class='hoverSee EID"+array[key]["group"]+"' onmouseover='showClass(\"EID"+array[key]["group"]+"\")' onmouseout='hideClass(\"EID"+array[key]["group"]+"\")'>EID "+array[key]["group"]+"</a>, <a class='hoverSee TG"+array[key]["targetGroup"]+"' onmouseover='showClass(\"TG"+array[key]["targetGroup"]+"\")' onmouseout='hideClass(\"TG"+array[key]["targetGroup"]+"\")'> TG "+array[key]["targetGroup"]+"</a>; speed <input id='vehicleEventsInputSpeed"+key+"' type='text' name='"+key+"' value='"+array[key]["speedMultiplier"]+"'></div>"		 
+	 }
+	 
     }
    }else{
     if(upperKeyName=="resources"){
      $id('resourcesData').innerHTML = $id('resourcesData').innerHTML + "<div>"+key+"<input id='resourceInput_"+key+"' type='text' name='"+key+"' value='"+array[key]+"'></div>"
     }else{
      if(key=="group"){
-      addToPhase(array[key],"<div class='event "+upperUpperKeyName+"'>"+ upperUpperKeyName + " (ID "+ upperKeyName +")</div>") 
-     }else{		
-	 
+      addToPhase(array[key],"<div class='event "+upperUpperKeyName+"'>"+ upperUpperKeyName + " (<a class='"+ upperUpperKeyName + upperKeyName +"' onmouseover='showClass(\""+ upperUpperKeyName + upperKeyName +"\")' onmouseout='hideClass(\""+ upperUpperKeyName + upperKeyName +"\")'>UUID "+ upperKeyName +"</a>)</div>") 
 	 }
     }
    }
@@ -150,32 +172,24 @@ function loadLevelData(array,upperKeyName,upperUpperKeyName){
  }  
 }
 
- function drawDataToDiv(array,space,upperKeyName,upperUpperKeyName){
-for(var key in array) {
-    if(array.hasOwnProperty(key)) { //to be safe
-  if(key=="normalized"||key=="magnitude"||key=="sqrMagnitude"){continue;}
-  var typ = typeof array[key]	  
-  if(typ=="object"){
-   if((typeof (array[key].length)) != "undefined"){
-       $id('data').innerHTML = $id('data').innerHTML + '<div> '+ space + key +' { '+ (array[key].length) +' } </div>'
-	drawDataToDiv(array[key],(space+"&nbsp;|&nbsp;"),key,upperKeyName)
+function drawDataToDiv(array,space,upperKeyName,upperUpperKeyName){
+ for(var key in array) {
+  if(array.hasOwnProperty(key)) { //to be safe
+   if(key=="normalized"||key=="magnitude"||key=="sqrMagnitude"){continue;}
+   var typ = typeof array[key]	  
+   if(typ=="object"){
+    if((typeof (array[key].length)) != "undefined"){
+     $id('data').innerHTML = $id('data').innerHTML + '<div> '+ space + key +' { '+ (array[key].length) +' } </div>'
+	 drawDataToDiv(array[key],(space+"&nbsp;|&nbsp;"),key,upperKeyName)
+    }else{
+	 $id('data').innerHTML = $id('data').innerHTML + '<div> '+ space + key +' [ '+ Object.size(array[key]) +' ] </div>'
+     drawDataToDiv(array[key],(space+"&nbsp;|&nbsp;"),key,upperKeyName)
+    }
    }else{
-	$id('data').innerHTML = $id('data').innerHTML + '<div> '+ space + key +' [ '+ Object.size(array[key]) +' ] </div>'
-    drawDataToDiv(array[key],(space+"&nbsp;|&nbsp;"),key,upperKeyName)
-   }
-  }else{
-   if(upperKeyName=="resources"){
-	$id('resources').innerHTML = $id('resources').innerHTML + "<div>" + key + ":" + array[key] + "</div>"
-   }else{
-    if(key=="group"){
-	 addToPhase(array[key],"<div>"+ upperUpperKeyName + " (ID "+ upperKeyName +")</div>") 
-    }else{		
-     $id('data').innerHTML = $id('data').innerHTML + '<div> '+ space + key +' is a '+ (typ) +' ['+ array[key] +']</div>'
-	}
+    $id('data').innerHTML = $id('data').innerHTML + '<div> '+ space + key +' is a '+ (typ) +' ['+ array[key] +']</div>'
    }
   }
-    }
-   }
+ }
 }
 
 // output file information
@@ -184,15 +198,17 @@ function ParseFile(file,fileID) {
   var reader = new FileReader();
   reader.onload = function(e) {
    // get file content
-var text = e.target.result;
-var obj = JSON.parse(text);
-saves.push(obj);
-   saves[(saves.length-1)]["fileName"] = file.name
-   AddFile("<p>#"+(saves.length)+" <strong>" + file.name + "</strong><br><i>"+ obj["description"] +"</i></p>");
-//drawDataToDiv(obj,"",[(saves.length-1)])
-  }
-  reader.readAsText(file);
- }else{alert("The file '"+file.name+"' is not a valid file to use for this editor!")}
+  var text = e.target.result;
+  var obj = JSON.parse(text);
+  saves.push(obj);
+  saves[(saves.length-1)]["fileName"] = file.name
+  AddFile("<p>#"+(saves.length)+" <strong>" + file.name + "</strong><br><i>"+ obj["description"] +"</i></p>");
+  drawDataToDiv(obj,"",[(saves.length-1)])
+ }
+ reader.readAsText(file);
+ }else{
+  alert("The file '"+file.name+"' is not a valid file to use for this editor!")
+ }
 }
 
 // initialize
